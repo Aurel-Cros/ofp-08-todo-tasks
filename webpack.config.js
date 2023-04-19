@@ -34,6 +34,7 @@ const config = {
         rules: [
             {
                 test: /\.(js|jsx)$/i,
+                exclude: /node_modules/,
                 loader: 'babel-loader',
             },
             {
@@ -54,8 +55,8 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
-        
+
+
     } else {
         config.mode = 'development';
     }
