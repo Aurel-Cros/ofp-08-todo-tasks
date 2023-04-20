@@ -44,12 +44,13 @@ class ToDoList {
         const controlsBar = make("div", "controlsBar");
         this.ctrls.filters = make("div", "filters");
 
-        const filtAll = make("button", "filter", "All");
+        const filtAll = make("button", "filter active", "All");
         const filtAct = make("button", "filter", "Active");
         const filtDone = make("button", "filter", "Completed");
         filtAll.value = "all";
         filtAct.value = "act";
         filtDone.value = "done";
+        this.currentFilter = "all";
 
         this.ctrls.filters.append(filtAll, filtAct, filtDone);
         controlDiv.appendChild(this.ctrls.filters);
@@ -109,8 +110,11 @@ class ToDoItem {
         this.initEvents();
     }
     build(name) {
+        const bgHolder = make("div");
         const text = make("p");
         text.textContent = name;
+        const blockLeft = make("div");
+        blockLeft.append(bgHolder, text);
 
         this.btnDone = make("button", "btn-done");
         this.btnDel = make("button", "btn-del");
@@ -118,21 +122,21 @@ class ToDoItem {
         btns.append(this.btnDone, this.btnDel);
 
         this.element = make("div", "task-bar");
-        this.element.append(text, btns);
+        this.element.append(blockLeft, btns);
         // Add item on page
         // Add it to local storage
         this.container.appendChild(this.element);
     }
     initEvents() {
         this.btnDone.addEventListener("click", () => {
-            this.complete();
+            this.complete = !this.complete;
+            this.element.classList.toggle('done');
         });
         this.btnDel.addEventListener("click", () => {
             this.delete();
         });
     }
     complete() {
-        this.complete = true;
         // Update display
         // Update local storage
     }
