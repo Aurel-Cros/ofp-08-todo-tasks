@@ -1,0 +1,55 @@
+body {
+    margin: 0;
+}
+
+#component {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#frame {
+    width: min(800px, 100%);
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    >div {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+    }
+
+    >h2 {
+        font-variant: small-caps;
+    }
+}
+
+.btn-dark {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background-color: transparent;
+    background-image: url(img/dark-switch.svg);
+    background-size: 100% 100%;
+}
+
+.search-bar {
+    border: none;
+    border-radius: 0.75rem;
+    height: 1.5rem;
+    padding: 0.5625rem 0.8125rem;
+    background-color: transparent;
+    background-image: url(img/search.svg);
+    background-size: auto 1.75rem;
+    background-repeat: no-repeat;
+    background-position: 90% 50%;
+
+    &:focus {
+        outline: none;
+        background-color: #E8E8E8;
+    }
+}
