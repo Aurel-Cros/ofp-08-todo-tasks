@@ -106,12 +106,30 @@ class ToDoItem {
         this.name = name;
         this.complete = false;
         this.build(name);
+        this.initEvents();
     }
     build(name) {
-        this.element = make("div", "task-bar", name);
+        const text = make("p");
+        text.textContent = name;
+
+        this.btnDone = make("button", "btn-done");
+        this.btnDel = make("button", "btn-del");
+        const btns = make("div", "btns-div");
+        btns.append(this.btnDone, this.btnDel);
+
+        this.element = make("div", "task-bar");
+        this.element.append(text, btns);
         // Add item on page
         // Add it to local storage
         this.container.appendChild(this.element);
+    }
+    initEvents() {
+        this.btnDone.addEventListener("click", () => {
+            this.complete();
+        });
+        this.btnDel.addEventListener("click", () => {
+            this.delete();
+        });
     }
     complete() {
         this.complete = true;
