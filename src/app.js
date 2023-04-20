@@ -19,34 +19,34 @@ class ToDoList {
         // Each method populates this.ctrls with elements having active roles (search bar, buttons...)
 
         this.buildHeader();
-        this.buildControls();
+        this.buildMain();
     }
     buildHeader() {
         // This builds the top part of the page : the title, search bar and dark mode switch
 
-        const title = this.make("h2", "", "To do :");
-        this.ctrls.darkSwitch = this.make("button", "btn-dark");
-        this.ctrls.searchBar = this.make("input", "search-bar");
+        const title = make("h2", "", "To do :");
+        this.ctrls.darkSwitch = make("button", "btn-dark");
+        this.ctrls.searchBar = make("input", "search-bar");
         this.ctrls.searchBar.type = "text";
 
-        const side = this.make("div");
+        const side = make("div");
         side.append(this.ctrls.searchBar, this.ctrls.darkSwitch);
 
-        const header = this.make("header");
+        const header = make("header");
         header.append(title, side);
 
         this.frame.appendChild(header);
         this.componentFrame.appendChild(this.frame);
     }
-    buildControls() {
+    buildMain() {
         // This populates the control area above the list, with the view filters and the add/clear buttons
-        const controlDiv = this.make("div", "controlsDiv");
-        const controlsBar = this.make("div", "controlsBar");
-        this.ctrls.filters = this.make("div", "filters");
+        const controlDiv = make("div", "controlsDiv");
+        const controlsBar = make("div", "controlsBar");
+        this.ctrls.filters = make("div", "filters");
 
-        const filtAll = this.make("button", "filter", "All");
-        const filtAct = this.make("button", "filter", "Active");
-        const filtDone = this.make("button", "filter", "Completed");
+        const filtAll = make("button", "filter", "All");
+        const filtAct = make("button", "filter", "Active");
+        const filtDone = make("button", "filter", "Completed");
         filtAll.value = "all";
         filtAct.value = "act";
         filtDone.value = "done";
@@ -54,16 +54,21 @@ class ToDoList {
         this.ctrls.filters.append(filtAll, filtAct, filtDone);
         controlDiv.appendChild(this.ctrls.filters);
 
-        this.ctrls.btnAdd = this.make("button", "ctrl-add", "Add a new task");
-        this.ctrls.btnClr = this.make("button", "ctrl-clr", "Clear completed");
+        this.ctrls.btnAdd = make("button", "ctrl-add", "Add a new task");
+        this.ctrls.btnClr = make("button", "ctrl-clr", "Clear completed");
         controlsBar.append(this.ctrls.btnAdd, this.ctrls.btnClr);
 
         controlDiv.appendChild(controlsBar);
 
         // This creates the main as a side effect, too
-        this.DOM.main = this.make("main");
+        this.DOM.main = make("main");
         this.DOM.main.appendChild(controlDiv);
         this.frame.appendChild(this.DOM.main);
+
+        // This will contain the tasks
+        const tasksDiv = make("div");
+        tasksDiv.id = "tasks-container";
+        this.DOM.main.appendChild(tasksDiv);
     }
 
     initEvents() {
@@ -90,13 +95,9 @@ class ToDoList {
 
         })
     }
-
-    make(tag, classs = "", content = "") {
-        const element = document.createElement(tag);
-        if (classs)
-            element.className = classs;
-        element.textContent = content;
-        return element;
+    addTask(name) {
+        const task = new ToDoItem(name);
+        this.items.push(task);
     }
 }
 
@@ -107,8 +108,10 @@ class ToDoItem {
         this.build(name);
     }
     build(name) {
+        this.element = make("div", "task-bar", name);
         // Add item on page
         // Add it to local storage
+        this.container.appendChild(this.element);
     }
     complete() {
         this.complete = true;
@@ -116,9 +119,20 @@ class ToDoItem {
         // Update local storage
     }
     delete() {
+        this.element.remove();
         // Remove item from page
         // Remove item from local storage
     }
 }
 
+function make(tag, classs = "", content = "") {
+    const element = document.createElement(tag);
+    if (classs)
+        element.className = classs;
+    element.textContent = content;
+    return element;
+}
+
 const app = new ToDoList();
+ToDoItem.prototype.container = document.querySelector("#tasks-container");
+app.addTask("Build this app.");
