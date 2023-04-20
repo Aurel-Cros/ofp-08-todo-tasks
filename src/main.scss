@@ -99,6 +99,7 @@ header {
 
 .filters button {
     border: none;
+    cursor: pointer;
     background-color: transparent;
     background-image: linear-gradient(to right, $sub-text, $sub-text);
     background-size: 0% 0.1875rem;
@@ -118,7 +119,9 @@ header {
 }
 
 .controlsBar button {
+    box-sizing: border-box;
     border: none;
+    cursor: pointer;
     font-weight: 600;
     line-height: 1.1719rem;
     padding: 1rem 0.875rem 1rem 3.125rem;
@@ -128,12 +131,27 @@ header {
     background-position: 0.625rem 50%;
     background-size: auto 1.875rem;
 
+    &:hover {
+        background-color: transparent;
+        outline: 2px solid black;
+    }
+
     &.ctrl-add {
         background-image: url(assets/img/add.svg);
+
+        &:hover {
+            // #00B907
+            filter: brightness(0%) invert(40%) sepia(100%) saturate(991%) hue-rotate(90deg) brightness(99%) contrast(104%) drop-shadow(3px 3px 3px rgba(0, 0, 0, 0.251));
+        }
     }
 
     &.ctrl-clr {
         background-image: url(assets/img/clear-all.svg);
+
+        &:hover {
+            // #CF1F1F
+            filter: brightness(0%) invert(13%) sepia(88%) saturate(4399%) hue-rotate(354deg) brightness(96%) contrast(86%) drop-shadow(3px 3px 3px rgba(0, 0, 0, 0.251));
+        }
     }
 }
 
@@ -152,7 +170,7 @@ header {
 
         & .btn-done {
             // #00B907
-            filter: brightness(0%) invert(40%) sepia(100%) saturate(991%) hue-rotate(90deg) brightness(99%) contrast(104%);
+            filter: brightness(0%) invert(40%) sepia(100%) saturate(991%) hue-rotate(90deg) brightness(99%) contrast(104%) drop-shadow(3px 3px 3px rgba(0, 0, 0, 0.251));
         }
     }
 
@@ -193,10 +211,20 @@ header {
 
         &.btn-del {
             background-image: url(assets/img/delete.svg);
+
+            &:hover {
+                // #CF1F1F
+                filter: brightness(0%) invert(13%) sepia(88%) saturate(4399%) hue-rotate(354deg) brightness(96%) contrast(86%) drop-shadow(3px 3px 3px rgba(0, 0, 0, 0.251));
+            }
         }
 
         &.btn-done {
             background-image: url(assets/img/check.svg);
+
+            &:hover {
+                // #00B907
+                filter: brightness(0%) invert(40%) sepia(100%) saturate(991%) hue-rotate(90deg) brightness(99%) contrast(104%) drop-shadow(3px 3px 3px rgba(0, 0, 0, 0.251));
+            }
         }
     }
 }

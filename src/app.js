@@ -44,15 +44,15 @@ class ToDoList {
         const controlsBar = make("div", "controlsBar");
         this.ctrls.filters = make("div", "filters");
 
-        const filtAll = make("button", "filter active", "All");
-        const filtAct = make("button", "filter", "Active");
-        const filtDone = make("button", "filter", "Completed");
-        filtAll.value = "all";
-        filtAct.value = "act";
-        filtDone.value = "done";
-        this.currentFilter = "all";
+        this.filtAll = make("button", "filter active", "All");
+        this.filtAct = make("button", "filter", "Active");
+        this.filtDone = make("button", "filter", "Completed");
+        this.filtAll.value = "all";
+        this.filtAct.value = "act";
+        this.filtDone.value = "done";
+        this.currentFilter = this.filtAll;
 
-        this.ctrls.filters.append(filtAll, filtAct, filtDone);
+        this.ctrls.filters.append(this.filtAll, this.filtAct, this.filtDone);
         controlDiv.appendChild(this.ctrls.filters);
 
         this.ctrls.btnAdd = make("button", "ctrl-add", "Add a new task");
@@ -92,8 +92,9 @@ class ToDoList {
         })
         // Filters
         this.ctrls.filters.addEventListener("click", (e) => {
-            console.log(e.target.value)
-
+            this.currentFilter.classList.remove("active");
+            e.target.classList.add("active");
+            this.currentFilter = e.target;
         })
     }
     addTask(name) {
