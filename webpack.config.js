@@ -20,12 +20,17 @@ const config = {
         open: true,
         host: 'localhost',
     },
+    optimization: {
+        minimize: true
+    },
     plugins: [
         new HtmlWebpackPlugin({
             template: 'src/index.html',
         }),
 
-        new MiniCssExtractPlugin(),
+        new MiniCssExtractPlugin({
+            filename: 'style.mini.css'
+        }),
 
         // Add your plugins here
         // Learn more about plugins from https://webpack.js.org/configuration/plugins/
