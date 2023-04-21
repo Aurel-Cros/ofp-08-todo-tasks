@@ -35,13 +35,11 @@ class LocalStorageHandler {
         }
         const currentList = this.getAll();
         const lastId = Number(localStorage.getItem('lastId'));
-        console.log(currentList);
         entry.id = lastId + 1;
         currentList.push(entry);
 
         localStorage.setItem('tasksList', JSON.stringify(currentList));
         localStorage.setItem('lastId', entry.id);
-        console.log(`Created entry ${entry.id}`);
         return entry.id;
     }
     updateText(taskId, text) {

@@ -5,7 +5,10 @@ const lsHandler = new LocalStorageHandler();
 class ToDoList {
     constructor() {
         this.darkTheme = false;
+        // items is used to fetch from localStorage
         this.items = [];
+        // elements is the live list of HTML elements to interact with
+        this.elements = [];
         this.componentFrame = document.querySelector("#component");
         this.frame = document.createElement("div");
         this.frame.id = "frame";
@@ -86,11 +89,17 @@ class ToDoList {
         // Base state interactions
         // Add task button,
         this.ctrls.btnAdd.addEventListener("click", () => {
-            this.addTask("→ Your text here, click to edit");
+            this.addTask("Your text here, click to edit");
         })
         // Clear all completed button,
         this.ctrls.btnClr.addEventListener("click", () => {
             console.log('Clear completed tasks.');
+            this.elements.forEach((entry) => {
+                console.log(entry);
+                if (entry.isComplete) {
+                    entry.delete();
+                }
+            })
         })
         // Dark mode switch,
         this.ctrls.darkSwitch.addEventListener("click", () => {
@@ -110,18 +119,21 @@ class ToDoList {
     addTask(name) {
         const task = new ToDoItem(name);
         task.addToLS();
+        this.elements.push(task);
     }
     getAll() {
         this.items = lsHandler.getAll();
     }
     displayAll() {
-        this.items.forEach(entry => {
+        this.items.forEach((entry, index) => {
             const task = new ToDoItem(entry.name);
             task.id = entry.id;
             if (entry.isDone) {
                 task.element.classList.add("done");
                 task.isComplete = entry.isDone;
             }
+            // Link HTML element to list array
+            this.elements[index] = task;
         });
     }
 }
@@ -154,6 +166,7 @@ class ToDoItem {
     addToLS() {
         // This method adds the name to the storage and returns an id (based on number of tasks stored)
         this.id = lsHandler.set(this.name, this.isComplete);
+        return this.id;
     }
     initEvents() {
         this.btnDone.addEventListener("click", () => {
@@ -163,7 +176,6 @@ class ToDoItem {
             this.delete();
         });
         this.text.addEventListener("focusout", () => {
-            console.log(this.text.textContent);
             this.putText(this.text.textContent);
         })
     }
