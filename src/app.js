@@ -1,3 +1,5 @@
+import './localStorage.js';
+
 class ToDoList {
     constructor() {
         this.darkTheme = false;
@@ -82,7 +84,7 @@ class ToDoList {
         // Base state interactions
         // Add task button,
         this.ctrls.btnAdd.addEventListener("click", () => {
-            console.log('Add a task.');
+            this.addTask();
         })
         // Clear all completed button,
         this.ctrls.btnClr.addEventListener("click", () => {
@@ -112,7 +114,7 @@ class ToDoList {
 class ToDoItem {
     constructor(name) {
         this.name = name;
-        this.complete = false;
+        this.isComplete = false;
         this.build(name);
         this.initEvents();
     }
@@ -131,13 +133,13 @@ class ToDoItem {
         this.element = make("div", "task-bar");
         this.element.append(blockLeft, btns);
         // Add item on page
-        // Add it to local storage
         this.container.appendChild(this.element);
+        // Add it to local storage
+        localStorage.setItem('')
     }
     initEvents() {
         this.btnDone.addEventListener("click", () => {
-            this.complete = !this.complete;
-            this.element.classList.toggle('done');
+            this.complete();
         });
         this.btnDel.addEventListener("click", () => {
             this.delete();
@@ -145,6 +147,8 @@ class ToDoItem {
     }
     complete() {
         // Update display
+        this.isComplete = !this.isComplete;
+        this.element.classList.toggle('done');
         // Update local storage
     }
     delete() {
