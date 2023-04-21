@@ -30,6 +30,7 @@ body {
     color: $main-text;
     font-family: 'Roboto';
     font-weight: 400;
+    transition: all 200ms;
 }
 
 #component {
@@ -40,6 +41,7 @@ body {
 
 #frame {
     width: min(800px, 100%);
+    padding: 0 1rem;
 }
 
 header {
@@ -71,6 +73,8 @@ header {
 }
 
 .search-bar {
+    color: $main-text;
+    cursor:pointer;
     border: none;
     border-radius: 0.75rem;
     height: 1.5rem;
@@ -79,9 +83,14 @@ header {
     background-image: url(assets/img/search.svg);
     background-size: auto 1.75rem;
     background-repeat: no-repeat;
-    background-position: 90% 50%;
+    background-position: calc(100% - 1rem) 50%;
+
+    transition: width 300ms ease-in-out, background-color 300ms ease-in-out;
+    width: 50px;
 
     &:focus {
+        cursor:text;
+        width: 200px;
         outline: none;
         background-color: $btn-bg;
     }
@@ -123,6 +132,7 @@ header {
     box-sizing: border-box;
     border: none;
     cursor: pointer;
+    color: $main-text;
     font-weight: 600;
     line-height: 1.1719rem;
     padding: 1rem 0.875rem 1rem 3.125rem;

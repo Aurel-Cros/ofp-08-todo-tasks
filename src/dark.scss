@@ -1,0 +1,81 @@
+$dark-main-bg : #242424;
+$dark-btn-bg : #606060;
+$dark-task-bg : #606060;
+$dark-task-done-bg : #3E3E3E;
+$dark-title : #F3F3F3;
+$dark-main-text : #E0E2E6;
+$dark-sub-text : #818798;
+$dark-filters-text : #B9BCC6;
+
+.dark-mode {
+    background-color: $dark-main-bg;
+
+    h2 {
+        color: $dark-title;
+    }
+
+    .btn-dark {
+        background-image: url(assets/img/dark-mode/dark-switch.svg);
+    }
+
+    .search-bar {
+        color: $dark-main-text;
+        background-image: url(assets/img/dark-mode/search.svg);
+
+        &:focus {
+            background-color: $dark-btn-bg;
+        }
+    }
+
+    .filters button {
+        color: $dark-filters-text;
+    }
+
+    .controlsBar button {
+        color: $dark-main-text;
+        background-color: $dark-btn-bg;
+
+        &.ctrl-add {
+            background-image: url(assets/img/dark-mode/add.svg);
+
+            &:hover {
+                outline: 2px solid #00B907;
+            }
+        }
+
+        &.ctrl-clr {
+            background-image: url(assets/img/dark-mode/clear-all.svg);
+
+            &:hover {
+                outline: 2px solid #CF1F1F;
+            }
+        }
+
+        &:hover {
+            background-color: transparent;
+            filter: none;
+        }
+    }
+
+    .task-bar {
+        >div:first-child>div:first-child {
+            background-image: url(assets/img/dark-mode/grab.svg);
+        }
+
+        background-color: $dark-task-bg;
+        color: $dark-main-text;
+
+        &.done {
+            background-color: $dark-task-done-bg;
+            color: $dark-sub-text;
+        }
+
+        .btn-done {
+            background-image: url(assets/img/dark-mode/check.svg);
+        }
+
+        .btn-del {
+            background-image: url(assets/img/dark-mode/delete.svg);
+        }
+    }
+}
