@@ -117,6 +117,10 @@ class ToDoList {
         list.forEach(entry => {
             const task = new ToDoItem(entry.name);
             task.id = entry.id;
+            if (entry.isDone) {
+                task.element.classList.add("done");
+                task.isComplete = entry.isDone;
+            }
         });
     }
 }

@@ -49,9 +49,12 @@ class LocalStorageHandler {
         const newList = [];
 
         currentList.forEach((entry) => {
-            if (taskId != entry.id)
-                newList.push(entry);
+            if (taskId == entry.id) {
+                entry.isDone = !entry.isDone;
+            }
+            newList.push(entry);
         })
+        localStorage.setItem('tasksList', JSON.stringify(newList));
     }
     delete(taskId) {
         const currentList = this.getAll();
