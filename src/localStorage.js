@@ -20,6 +20,7 @@ class LocalStorageHandler {
         if (test === null) {
             console.log("Storage empty, key created");
             localStorage.setItem('tasksList', '[]');
+            localStorage.setItem('lastId', '-1');
         }
     }
     getAll() {
@@ -33,15 +34,25 @@ class LocalStorageHandler {
             isDone: taskState
         }
         const currentList = this.getAll();
+        const lastId = Number(localStorage.getItem('lastId'));
         console.log(currentList);
-        entry.id = currentList?.length || 0;
-        currentList?.push(entry);
+        entry.id = lastId + 1;
+        currentList.push(entry);
 
         localStorage.setItem('tasksList', JSON.stringify(currentList));
+        localStorage.setItem('lastId', entry.id);
         console.log(`Created entry ${entry.id}`);
         return entry.id;
     }
+    complete(taskId) {
+        const currentList = this.getAll();
+        const newList = [];
 
+        currentList.forEach((entry) => {
+            if (taskId != entry.id)
+                newList.push(entry);
+        })
+    }
     delete(taskId) {
         const currentList = this.getAll();
         const newList = [];
@@ -51,6 +62,9 @@ class LocalStorageHandler {
                 newList.push(entry);
         })
         localStorage.setItem('tasksList', JSON.stringify(newList));
+        /* NOTE :
+        We can't use array index to identify each entry, as removing elements from the array will shift indexes to avoid "holes".
+        */
     }
 }
 

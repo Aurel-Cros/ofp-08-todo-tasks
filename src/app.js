@@ -109,7 +109,6 @@ class ToDoList {
     }
     addTask(name) {
         const task = new ToDoItem(name);
-        this.items.push(task);
         task.addToLS();
     }
 
@@ -118,7 +117,6 @@ class ToDoList {
         list.forEach(entry => {
             const task = new ToDoItem(entry.name);
             task.id = entry.id;
-            this.items.push(task);
         });
     }
 }
@@ -164,6 +162,7 @@ class ToDoItem {
         this.isComplete = !this.isComplete;
         this.element.classList.toggle('done');
         // Update local storage
+        lsHandler.complete(this.id);
     }
     delete() {
         // Remove item from page
