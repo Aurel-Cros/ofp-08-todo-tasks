@@ -3,17 +3,28 @@ Task list syntax :
 
 tasksList : [
     {
-        taskId : number,
-        taskName : string,
-        taskDone : bool
+        id : number,
+        name : string,
+        isDone : bool
     },
     ...
 ]
 
 */
 class LocalStorageHandler {
+    constructor() {
+        this.init();
+    }
+    init() {
+        const test = localStorage.getItem('tasksList');
+        if (test === null) {
+            console.log("Storage empty, key created");
+            localStorage.setItem('tasksList', '[]');
+        }
+    }
     getAll() {
-        return JSON.parse(localStorage.getItem('tasksList'));
+        const list = localStorage.getItem('tasksList');
+        return JSON.parse(list);
     }
 
     set(taskName, taskState) {
@@ -22,10 +33,12 @@ class LocalStorageHandler {
             isDone: taskState
         }
         const currentList = this.getAll();
-        entry.id = currentList.length;
-        currentList.push(entry);
+        console.log(currentList);
+        entry.id = currentList?.length || 0;
+        currentList?.push(entry);
 
         localStorage.setItem('tasksList', JSON.stringify(currentList));
+        console.log(`Created entry ${entry.id}`);
         return entry.id;
     }
 
@@ -40,3 +53,5 @@ class LocalStorageHandler {
         localStorage.setItem('tasksList', JSON.stringify(newList));
     }
 }
+
+export { LocalStorageHandler };

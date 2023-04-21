@@ -1,4 +1,6 @@
-import './localStorage.js';
+import { LocalStorageHandler } from "./localStorage";
+
+const lsHandler = new LocalStorageHandler();
 
 class ToDoList {
     constructor() {
@@ -108,6 +110,16 @@ class ToDoList {
     addTask(name) {
         const task = new ToDoItem(name);
         this.items.push(task);
+        task.addToLS();
+    }
+
+    displayAll() {
+        const list = lsHandler.getAll();
+        list.forEach(entry => {
+            const task = new ToDoItem(entry.name);
+            task.id = entry.id;
+            this.items.push(task);
+        });
     }
 }
 
@@ -134,8 +146,10 @@ class ToDoItem {
         this.element.append(blockLeft, btns);
         // Add item on page
         this.container.appendChild(this.element);
-        // Add it to local storage
-        localStorage.setItem('')
+    }
+    addToLS() {
+        // This method adds the name to the storage and returns an id (based on number of tasks stored)
+        this.id = lsHandler.set(this.name, this.isComplete);
     }
     initEvents() {
         this.btnDone.addEventListener("click", () => {
@@ -152,9 +166,10 @@ class ToDoItem {
         // Update local storage
     }
     delete() {
-        this.element.remove();
         // Remove item from page
+        this.element.remove();
         // Remove item from local storage
+        lsHandler.delete(this.id);
     }
 }
 
@@ -168,4 +183,4 @@ function make(tag, classs = "", content = "") {
 
 const app = new ToDoList();
 ToDoItem.prototype.container = document.querySelector("#tasks-container");
-app.addTask("Build this app.");
+app.displayAll();
