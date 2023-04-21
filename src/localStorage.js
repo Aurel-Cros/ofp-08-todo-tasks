@@ -44,6 +44,18 @@ class LocalStorageHandler {
         console.log(`Created entry ${entry.id}`);
         return entry.id;
     }
+    updateText(taskId, text) {
+        const currentList = this.getAll();
+        const newList = [];
+
+        currentList.forEach((entry) => {
+            if (taskId == entry.id) {
+                entry.name = text;
+            }
+            newList.push(entry);
+        })
+        localStorage.setItem('tasksList', JSON.stringify(newList));
+    }
     complete(taskId) {
         const currentList = this.getAll();
         const newList = [];
@@ -68,6 +80,8 @@ class LocalStorageHandler {
         /* NOTE :
         We can't use array index to identify each entry, as removing elements from the array will shift indexes to avoid "holes".
         */
+        if (newList.length === 0)
+            localStorage.setItem('lastId', -1);
     }
 }
 

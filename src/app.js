@@ -86,7 +86,7 @@ class ToDoList {
         // Base state interactions
         // Add task button,
         this.ctrls.btnAdd.addEventListener("click", () => {
-            this.addTask();
+            this.addTask("→ Your text here, click to edit");
         })
         // Clear all completed button,
         this.ctrls.btnClr.addEventListener("click", () => {
@@ -111,10 +111,11 @@ class ToDoList {
         const task = new ToDoItem(name);
         task.addToLS();
     }
-
+    getAll() {
+        this.items = lsHandler.getAll();
+    }
     displayAll() {
-        const list = lsHandler.getAll();
-        list.forEach(entry => {
+        this.items.forEach(entry => {
             const task = new ToDoItem(entry.name);
             task.id = entry.id;
             if (entry.isDone) {
@@ -134,10 +135,11 @@ class ToDoItem {
     }
     build(name) {
         const bgHolder = make("div");
-        const text = make("p");
-        text.textContent = name;
+        this.text = make("p");
+        this.text.contentEditable = "true";
+        this.text.textContent = name;
         const blockLeft = make("div");
-        blockLeft.append(bgHolder, text);
+        blockLeft.append(bgHolder, this.text);
 
         this.btnDone = make("button", "btn-done");
         this.btnDel = make("button", "btn-del");
@@ -160,6 +162,13 @@ class ToDoItem {
         this.btnDel.addEventListener("click", () => {
             this.delete();
         });
+        this.text.addEventListener("focusout", () => {
+            console.log(this.text.textContent);
+            this.putText(this.text.textContent);
+        })
+    }
+    putText(text) {
+        lsHandler.updateText(this.id, text);
     }
     complete() {
         // Update display
@@ -186,4 +195,5 @@ function make(tag, classs = "", content = "") {
 
 const app = new ToDoList();
 ToDoItem.prototype.container = document.querySelector("#tasks-container");
+app.getAll();
 app.displayAll();
