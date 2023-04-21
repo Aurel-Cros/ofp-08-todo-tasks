@@ -93,9 +93,7 @@ class ToDoList {
         })
         // Clear all completed button,
         this.ctrls.btnClr.addEventListener("click", () => {
-            console.log('Clear completed tasks.');
             this.elements.forEach((entry) => {
-                console.log(entry);
                 if (entry.isComplete) {
                     entry.delete();
                 }
