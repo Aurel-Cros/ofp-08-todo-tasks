@@ -55,8 +55,14 @@ class ToDoList {
         this.ctrls.filters.append(this.filtAll, this.filtAct, this.filtDone);
         controlDiv.appendChild(this.ctrls.filters);
 
-        this.ctrls.btnAdd = make("button", "ctrl-add", "Add a new task");
-        this.ctrls.btnClr = make("button", "ctrl-clr", "Clear completed");
+        const btnAddText = make("span");
+        btnAddText.textContent = "Add a new task";
+        const btnClrText = make("span");
+        btnClrText.textContent = "Clear completed";
+        this.ctrls.btnAdd = make("button", "ctrl-add");
+        this.ctrls.btnAdd.appendChild(btnAddText);
+        this.ctrls.btnClr = make("button", "ctrl-clr");
+        this.ctrls.btnClr.appendChild(btnClrText);
         controlsBar.append(this.ctrls.btnAdd, this.ctrls.btnClr);
 
         controlDiv.appendChild(controlsBar);

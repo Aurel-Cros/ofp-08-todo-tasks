@@ -59,6 +59,7 @@ header {
     >h2 {
         font-family: 'Fira Sans Condensed';
         font-variant: small-caps;
+        transition: all 200ms;
     }
 }
 
@@ -74,7 +75,7 @@ header {
 
 .search-bar {
     color: $main-text;
-    cursor:pointer;
+    cursor: pointer;
     border: none;
     border-radius: 0.75rem;
     height: 1.5rem;
@@ -89,7 +90,7 @@ header {
     width: 50px;
 
     &:focus {
-        cursor:text;
+        cursor: text;
         width: 200px;
         outline: none;
         background-color: $btn-bg;
