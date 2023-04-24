@@ -1,5 +1,7 @@
 import { LocalStorageHandler } from "./localStorage";
+import { MakeElement } from "./makeElement";
 
+const make = new MakeElement();
 const lsHandler = new LocalStorageHandler();
 
 class ToDoList {
@@ -31,15 +33,14 @@ class ToDoList {
     buildHeader() {
         // This builds the top part of the page : the title, search bar and dark mode switch
 
-        const title = make("h2", "", "To do :");
-        this.ctrls.darkSwitch = make("button", "btn-dark");
-        this.ctrls.searchBar = make("input", "search-bar");
-        this.ctrls.searchBar.type = "text";
+        const title = make.create("h2", { content: "To do :" });
+        this.ctrls.darkSwitch = make.create("button", { attributes: [{ name: "class", value: "btn-dark" }] });
+        this.ctrls.searchBar = make.create("input", { attributes: [{ name: "class", value: "search-bar" }, { name: "type", value: "text" }] });
 
-        const side = make("div");
+        const side = make.create("div");
         side.append(this.ctrls.searchBar, this.ctrls.darkSwitch);
 
-        const header = make("header");
+        const header = make.create("header");
         header.append(title, side);
 
         this.frame.appendChild(header);
@@ -47,40 +48,35 @@ class ToDoList {
     }
     buildMain() {
         // This populates the control area above the list, with the view filters and the add/clear buttons
-        const controlDiv = make("div", "controlsDiv");
-        const controlsBar = make("div", "controlsBar");
-        this.ctrls.filters = make("div", "filters");
+        const controlDiv = make.create("div", { attributes: [{ name: "class", value: "controlsDiv" }] });
+        const controlsBar = make.create("div", { attributes: [{ name: "class", value: "controlsBar" }] });
+        this.ctrls.filters = make.create("div", { attributes: [{ name: "class", value: "filters" }] });
 
-        this.filtAll = make("button", "filter active", "All");
-        this.filtAct = make("button", "filter", "Active");
-        this.filtDone = make("button", "filter", "Completed");
-        this.filtAll.value = "all";
-        this.filtAct.value = "act";
-        this.filtDone.value = "done";
+        this.filtAll = make.create("button", { attributes: [{ name: "class", value: "filter active" }, { name: "value", value: "all" }], content: "All" });
+        this.filtAct = make.create("button", { attributes: [{ name: "class", value: "filter" }, { name: "value", value: "act" }], content: "Active" });
+        this.filtDone = make.create("button", { attributes: [{ name: "class", value: "filter" }, { name: "value", value: "done" }], content: "Completed" });
         this.currentFilter = this.filtAll;
 
         this.ctrls.filters.append(this.filtAll, this.filtAct, this.filtDone);
         controlDiv.appendChild(this.ctrls.filters);
 
-        const btnAddText = make("span");
-        btnAddText.textContent = "Add a new task";
-        const btnClrText = make("span");
-        btnClrText.textContent = "Clear completed";
-        this.ctrls.btnAdd = make("button", "ctrl-add");
+        const btnAddText = make.create("span", { content: "Add a new task" });
+        const btnClrText = make.create("span", { content: "Clear completed" });
+        this.ctrls.btnAdd = make.create("button", { attributes: [{ name: "class", value: "ctrl-add" }] });
         this.ctrls.btnAdd.appendChild(btnAddText);
-        this.ctrls.btnClr = make("button", "ctrl-clr");
+        this.ctrls.btnClr = make.create("button", { attributes: [{ name: "class", value: "ctrl-clr" }] });
         this.ctrls.btnClr.appendChild(btnClrText);
         controlsBar.append(this.ctrls.btnAdd, this.ctrls.btnClr);
 
         controlDiv.appendChild(controlsBar);
 
         // This creates the main as a side effect, too
-        this.DOM.main = make("main");
+        this.DOM.main = make.create("main");
         this.DOM.main.appendChild(controlDiv);
         this.frame.appendChild(this.DOM.main);
 
         // This will contain the tasks
-        const tasksDiv = make("div");
+        const tasksDiv = make.create("div");
         tasksDiv.id = "tasks-container";
         this.DOM.main.appendChild(tasksDiv);
     }
@@ -192,20 +188,17 @@ class ToDoItem {
         this.initEvents();
     }
     build(name) {
-        const bgHolder = make("div");
-        this.text = make("p");
-        this.text.contentEditable = "true";
-        this.text.spellcheck = false;
-        this.text.textContent = name;
-        const blockLeft = make("div");
+        const bgHolder = make.create("div");
+        this.text = make.create("p", { attributes: [{ name: "contentEditable", value: "true" }, { name: "spellCheck", value: false }], content: name });
+        const blockLeft = make.create("div");
         blockLeft.append(bgHolder, this.text);
 
-        this.btnDone = make("button", "btn-done");
-        this.btnDel = make("button", "btn-del");
-        const btns = make("div", "btns-div");
+        this.btnDone = make.create("button", { attributes: [{ name: "class", value: "btn-done" }] });
+        this.btnDel = make.create("button", { attributes: [{ name: "class", value: "btn-del" }] });
+        const btns = make.create("div", { attributes: [{ name: "class", value: "btns-div" }] });
         btns.append(this.btnDone, this.btnDel);
 
-        this.element = make("div", "task-bar");
+        this.element = make.create("div", { attributes: [{ name: "class", value: "task-bar" }] });
         this.element.append(blockLeft, btns);
         // Add item on page
         this.container.appendChild(this.element);
@@ -243,14 +236,6 @@ class ToDoItem {
         // Remove item from local storage
         lsHandler.delete(this.id);
     }
-}
-
-function make(tag, classs = "", content = "") {
-    const element = document.createElement(tag);
-    if (classs)
-        element.className = classs;
-    element.textContent = content;
-    return element;
 }
 
 const app = new ToDoList();
