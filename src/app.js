@@ -217,6 +217,12 @@ class ToDoItem {
         });
         this.text.addEventListener("focusout", () => {
             this.putText(this.text.textContent);
+        });
+        this.text.addEventListener("keypress", (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                e.target.blur();
+            }
         })
     }
     putText(text) {
