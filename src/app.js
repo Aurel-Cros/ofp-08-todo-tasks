@@ -30,6 +30,10 @@ class ToDoList {
         this.buildTemplate();
         this.buildHeader();
         this.buildMain();
+
+        if (lsHandler.getDarkMode() === 'true') {
+            document.body.classList.add('dark-mode');
+        }
     }
     buildHeader() {
         // This builds the top part of the page : the title, search bar and dark mode switch
@@ -119,6 +123,10 @@ class ToDoList {
         // Dark mode switch,
         this.ctrls.darkSwitch.addEventListener("click", () => {
             document.body.classList.toggle('dark-mode');
+            if (document.body.classList.contains('dark-mode'))
+                lsHandler.setDarkMode(true);
+            else
+                lsHandler.setDarkMode(false);
         })
         // Search bar,
         this.ctrls.searchBar.addEventListener("input", (e) => {

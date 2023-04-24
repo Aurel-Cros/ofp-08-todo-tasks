@@ -22,6 +22,8 @@ class LocalStorageHandler {
             localStorage.setItem('tasksList', '[]');
             localStorage.setItem('lastId', '-1');
         }
+        if (localStorage.getItem('dark-mode') === null)
+            localStorage.setItem('dark-mode', false);
     }
     getAll() {
         const list = localStorage.getItem('tasksList');
@@ -80,6 +82,13 @@ class LocalStorageHandler {
         */
         if (newList.length === 0)
             localStorage.setItem('lastId', -1);
+    }
+
+    setDarkMode(value) {
+        localStorage.setItem('dark-mode', value);
+    }
+    getDarkMode() {
+        return localStorage.getItem('dark-mode');
     }
 }
 
