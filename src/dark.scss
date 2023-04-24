@@ -22,7 +22,8 @@ $dark-filters-text : #B9BCC6;
         color: $dark-main-text;
         background-image: url(assets/img/dark-mode/search.svg);
 
-        &:focus {
+        &:focus,
+        &.hasText {
             background-color: $dark-btn-bg;
         }
     }
