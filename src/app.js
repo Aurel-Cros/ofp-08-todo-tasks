@@ -218,7 +218,7 @@ class ToDoItem {
 
         this.btnDel = this.element.querySelector(".btn-del");
         this.btnDone = this.element.querySelector(".btn-done");
-        this.grabHandle = this.element.querySelector("div>div");
+        this.grabHandle = this.element.querySelector(".task-bar > div:first-child > div:first-child");
     }
     buildNoTemplate(name) {
         this.grabHandle = make.create("div");
