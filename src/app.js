@@ -18,10 +18,10 @@ class ToDoList {
         // DOM stores layout and misc elements
         this.DOM = {};
 
-        this.buildAll();
+        this.buildPage();
         this.initEvents();
     }
-    buildAll() {
+    buildPage() {
         // This calls all methods that build each page section
         // Each method populates this.ctrls with elements having active roles (search bar, buttons...)
 
@@ -90,6 +90,7 @@ class ToDoList {
         // Add task button,
         this.ctrls.btnAdd.addEventListener("click", () => {
             this.addTask("Your text here, click to edit");
+            // this.applyFilters();
         })
         // Clear all completed button,
         this.ctrls.btnClr.addEventListener("click", () => {
@@ -105,13 +106,19 @@ class ToDoList {
         })
         // Search bar,
         this.ctrls.searchBar.addEventListener("input", (e) => {
-            console.log(e.target.value);
+            if (e.target.value)
+                this.ctrls.searchBar.classList.add('hasText');
+            else
+                this.ctrls.searchBar.classList.remove('hasText');
+
+            this.search(e.target.value);
         })
         // Filters
         this.ctrls.filters.addEventListener("click", (e) => {
             this.currentFilter.classList.remove("active");
             e.target.classList.add("active");
             this.currentFilter = e.target;
+            this.applyFilters();
         })
     }
     addTask(name) {
@@ -122,7 +129,7 @@ class ToDoList {
     getAll() {
         this.items = lsHandler.getAll();
     }
-    displayAll() {
+    buildAllItems() {
         this.items.forEach((entry, index) => {
             const task = new ToDoItem(entry.name);
             task.id = entry.id;
@@ -133,6 +140,47 @@ class ToDoList {
             // Link HTML element to list array
             this.elements[index] = task;
         });
+    }
+    applyFilters() {
+        this.elements.forEach((task) => {
+            switch (this.currentFilter.value) {
+                case 'all':
+                    task.element.classList.remove('hide');
+                    break;
+                case 'act':
+                    if (task.isComplete)
+                        task.element.classList.add('hide');
+                    else
+                        task.element.classList.remove('hide');
+                    break;
+                case 'done':
+                    if (!task.isComplete)
+                        task.element.classList.add('hide');
+                    else
+                        task.element.classList.remove('hide');
+                    break;
+            }
+        })
+        if (this.ctrls.searchBar.value) {
+            this.search(this.ctrls.searchBar.value);
+        }
+    }
+    search(search) {
+        const value = search.toLowerCase();
+
+        this.elements.forEach((task) => {
+            const taskText = task.element.textContent.toLowerCase();
+
+            if (taskText.includes(value)) {
+                if (this.currentFilter.value === 'all' ||
+                    task.isComplete && this.currentFilter.value === 'done' ||
+                    !task.isComplete && this.currentFilter.value === 'act') {
+                    task.element.classList.remove('hide');
+                }
+            }
+            else
+                task.element.classList.add('hide');
+        })
     }
 }
 
@@ -187,6 +235,7 @@ class ToDoItem {
         this.element.classList.toggle('done');
         // Update local storage
         lsHandler.complete(this.id);
+        // app.applyFilters();
     }
     delete() {
         // Remove item from page
@@ -207,4 +256,4 @@ function make(tag, classs = "", content = "") {
 const app = new ToDoList();
 ToDoItem.prototype.container = document.querySelector("#tasks-container");
 app.getAll();
-app.displayAll();
+app.buildAllItems();

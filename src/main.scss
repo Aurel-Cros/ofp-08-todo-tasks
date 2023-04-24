@@ -89,7 +89,8 @@ header {
     transition: width 300ms ease-in-out, background-color 300ms ease-in-out;
     width: 50px;
 
-    &:focus {
+    &:focus,
+    &.hasText {
         cursor: text;
         width: 200px;
         outline: none;
@@ -246,4 +247,8 @@ header {
             }
         }
     }
+}
+
+.hide {
+    display: none;
 }
