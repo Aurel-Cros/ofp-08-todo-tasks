@@ -147,6 +147,7 @@ class ToDoItem {
         const bgHolder = make("div");
         this.text = make("p");
         this.text.contentEditable = "true";
+        this.text.spellcheck = false;
         this.text.textContent = name;
         const blockLeft = make("div");
         blockLeft.append(bgHolder, this.text);
