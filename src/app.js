@@ -27,6 +27,7 @@ class ToDoList {
         // This calls all methods that build each page section
         // Each method populates this.ctrls with elements having active roles (search bar, buttons...)
 
+        this.buildTemplate();
         this.buildHeader();
         this.buildMain();
     }
@@ -80,6 +81,25 @@ class ToDoList {
         tasksDiv.id = "tasks-container";
         this.DOM.main.appendChild(tasksDiv);
     }
+    buildTemplate() {
+        this.template = make.create("template", { attributes: [{ name: "id", value: "taskTemplate" }] });
+
+        const grabHandle = make.create("div");
+        const text = make.create("p", { attributes: [{ name: "contentEditable", value: "true" }, { name: "spellCheck", value: false }] });
+        const blockLeft = make.create("div");
+        blockLeft.append(grabHandle, text);
+
+        const btnDone = make.create("button", { attributes: [{ name: "class", value: "btn-done" }] });
+        const btnDel = make.create("button", { attributes: [{ name: "class", value: "btn-del" }] });
+        const btns = make.create("div", { attributes: [{ name: "class", value: "btns-div" }] });
+        btns.append(btnDone, btnDel);
+
+        const element = make.create("div", { attributes: [{ name: "class", value: "task-bar" }] });
+        element.append(blockLeft, btns);
+        this.template.appendChild(element);
+        document.body.appendChild(this.template);
+    }
+
 
     initEvents() {
         // Base state interactions
@@ -184,14 +204,27 @@ class ToDoItem {
     constructor(name) {
         this.name = name;
         this.isComplete = false;
-        this.build(name);
+        if ("content" in document.createElement("template"))
+            this.build(name);
+        else
+            this.buildNoTemplate(name);
         this.initEvents();
     }
     build(name) {
-        const bgHolder = make.create("div");
+        this.element = document.importNode(document.querySelector("template").firstChild, true); // Creates a deep copy of the template's child element
+        this.text = this.element.querySelector("p");
+        this.text.textContent = name;
+        this.container.appendChild(this.element);
+
+        this.btnDel = this.element.querySelector(".btn-del");
+        this.btnDone = this.element.querySelector(".btn-done");
+        this.grabHandle = this.element.querySelector("div>div");
+    }
+    buildNoTemplate(name) {
+        this.grabHandle = make.create("div");
         this.text = make.create("p", { attributes: [{ name: "contentEditable", value: "true" }, { name: "spellCheck", value: false }], content: name });
         const blockLeft = make.create("div");
-        blockLeft.append(bgHolder, this.text);
+        blockLeft.append(this.grabHandle, this.text);
 
         this.btnDone = make.create("button", { attributes: [{ name: "class", value: "btn-done" }] });
         this.btnDel = make.create("button", { attributes: [{ name: "class", value: "btn-del" }] });
@@ -211,6 +244,7 @@ class ToDoItem {
     initEvents() {
         this.btnDone.addEventListener("click", () => {
             this.complete();
+            app.applyFilters();
         });
         this.btnDel.addEventListener("click", () => {
             this.delete();
