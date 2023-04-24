@@ -257,6 +257,33 @@ class ToDoItem {
                 e.preventDefault();
                 e.target.blur();
             }
+        });
+        this.grabHandle.addEventListener("mouseenter", (e) => {
+            e.stopPropagation();
+            this.element.draggable = true;
+        });
+        this.grabHandle.addEventListener("mouseleave", (e) => {
+            e.stopPropagation();
+            this.element.draggable = false;
+        });
+        this.element.addEventListener("dragstart", (e) => {
+            this.element.classList.add('move');
+            e.dataTransfer.setData('text/html', this.element.innerHTML);
+            e.dataTransfer.effectAllowed = "move";
+        });
+        this.element.addEventListener("dragenter", (e) => {
+            // Something
+        });
+        this.element.addEventListener("dragleave", (e) => {
+            // Something
+        });
+        this.element.addEventListener("dragend", (e) => {
+            this.element.classList.remove('move');
+        });
+        this.element.addEventListener("drop", (e) => {
+            // Drop element
+            const source = e.dataTransfer.getData('text/html');
+            this.element = source;
         })
     }
     putText(text) {
