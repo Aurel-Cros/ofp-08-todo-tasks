@@ -191,6 +191,14 @@ header {
         opacity: 0.5;
     }
 
+    &.moveUnder {
+        border-bottom: 0.25rem dashed $sub-text;
+
+        & :first-child {
+            pointer-events: none;
+        }
+    }
+
     margin: 0.75rem auto;
     padding: 0.75rem 1rem;
 
