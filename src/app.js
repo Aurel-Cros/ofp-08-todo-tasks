@@ -31,9 +31,9 @@ class ToDoList {
         this.buildHeader();
         this.buildMain();
 
-        if (lsHandler.getDarkMode() === 'true') {
+        if (lsHandler.getDarkMode() === 'true')
             document.body.classList.add('dark-mode');
-        }
+
     }
     buildHeader() {
         // This builds the top part of the page : the title, search bar and dark mode switch
@@ -81,9 +81,8 @@ class ToDoList {
         this.frame.appendChild(this.DOM.main);
 
         // This will contain the tasks
-        const tasksDiv = make.create("div");
-        tasksDiv.id = "tasks-container";
-        this.DOM.main.appendChild(tasksDiv);
+        this.tasksContainer = make.create("div", { attributes: [{ name: "id", value: "tasks-container" }] });
+        this.DOM.main.appendChild(this.tasksContainer);
     }
     buildTemplate() {
         this.template = make.create("template", { attributes: [{ name: "id", value: "taskTemplate" }] });
@@ -145,26 +144,46 @@ class ToDoList {
             this.applyFilters();
         })
     }
-    addTask(name) {
-        const task = new ToDoItem(name);
-        task.addToLS();
-        this.elements.push(task);
-    }
     getAll() {
         this.items = lsHandler.getAll();
     }
     buildAllItems() {
-        this.items.forEach((entry, index) => {
+        this.items.forEach((entry) => {
             const task = new ToDoItem(entry.name);
             task.id = entry.id;
+
             if (entry.isDone) {
                 task.element.classList.add("done");
                 task.isComplete = entry.isDone;
             }
             // Link HTML element to list array
-            this.elements[index] = task;
+            this.elements[entry.id] = task;
         });
     }
+    addTask(name) {
+        const task = new ToDoItem(name);
+        const id = task.addToLS();
+        this.getAll();
+        this.elements[id] = task;
+    }
+
+    move(elToMove, underEl) {
+        const newArray = [];
+        this.items.forEach((entry, index) => {
+            if (entry.id === underEl) {
+                newArray.push(entry);
+                newArray.push(this.items[elToMove]);
+            }
+            else if (entry.id != elToMove) {
+                newArray.push(entry);
+            }
+        })
+        this.items = lsHandler.updateAll(newArray);
+        this.tasksContainer.replaceChildren();
+        this.buildAllItems();
+        this.applyFilters();
+    }
+
     applyFilters() {
         this.elements.forEach((task) => {
             switch (this.currentFilter.value) {
@@ -257,6 +276,7 @@ class ToDoItem {
         this.btnDel.addEventListener("click", () => {
             this.delete();
         });
+
         this.text.addEventListener("focusout", () => {
             this.putText(this.text.textContent);
         });
@@ -266,6 +286,7 @@ class ToDoItem {
                 e.target.blur();
             }
         });
+
         this.grabHandle.addEventListener("mouseenter", (e) => {
             e.stopPropagation();
             this.element.draggable = true;
@@ -274,24 +295,43 @@ class ToDoItem {
             e.stopPropagation();
             this.element.draggable = false;
         });
+
         this.element.addEventListener("dragstart", (e) => {
+            const data = {
+                id: this.id
+            };
             this.element.classList.add('move');
-            e.dataTransfer.setData('text/html', this.element.innerHTML);
+            e.dataTransfer.setData('text/json', JSON.stringify(data));
             e.dataTransfer.effectAllowed = "move";
-        });
-        this.element.addEventListener("dragenter", (e) => {
-            // Something
-        });
-        this.element.addEventListener("dragleave", (e) => {
-            // Something
         });
         this.element.addEventListener("dragend", (e) => {
             this.element.classList.remove('move');
         });
+
+        this.element.addEventListener("dragenter", (e) => {
+            // If this is not the source element, add CSS
+            const data = JSON.parse(e.dataTransfer.getData('text/json'));
+            if (this.id != data.id) {
+                this.element.classList.add('moveUnder');
+            }
+        });
+        this.element.addEventListener("dragleave", (e) => {
+            this.element.classList.remove('moveUnder');
+        });
+
+        this.element.addEventListener("dragover", (e) => {
+            e.dataTransfer.dropEffect = "move";
+            e.preventDefault();
+        });
         this.element.addEventListener("drop", (e) => {
-            // Drop element
-            const source = e.dataTransfer.getData('text/html');
-            this.element = source;
+            this.element.classList.remove('moveUnder');
+
+            e.preventDefault();
+            // If this is the source element, abort move
+            const data = JSON.parse(e.dataTransfer.getData('text/json'));
+            if (this.id != data.id) {
+                app.move(data.id, this.id);
+            }
         })
     }
     putText(text) {
@@ -303,6 +343,8 @@ class ToDoItem {
         this.element.classList.toggle('done');
         // Update local storage
         lsHandler.complete(this.id);
+        // Update task manager list with new data
+        app.getAll();
         // app.applyFilters();
     }
     delete() {
@@ -310,6 +352,8 @@ class ToDoItem {
         this.element.remove();
         // Remove item from local storage
         lsHandler.delete(this.id);
+        // Update task manager list with new data
+        app.getAll();
     }
 }
 

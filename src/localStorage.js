@@ -29,6 +29,20 @@ class LocalStorageHandler {
         const list = localStorage.getItem('tasksList');
         return JSON.parse(list);
     }
+    updateAll(newList) {
+        const pushList = [];
+        newList.forEach((item, index) => {
+            const entry = {
+                name: item.name,
+                isDone: item.isDone,
+                id: index
+            }
+            pushList.push(entry);
+        })
+        localStorage.setItem('lastId', pushList.length - 1);
+        localStorage.setItem('tasksList', JSON.stringify(pushList));
+        return pushList;
+    }
 
     set(taskName, taskState) {
         const entry = {
