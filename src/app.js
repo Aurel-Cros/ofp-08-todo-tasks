@@ -40,7 +40,7 @@ class ToDoList {
 
         const title = make.create("h2", { content: "To do :" });
         this.ctrls.darkSwitch = make.create("button", { attributes: [{ name: "class", value: "btn-dark" }] });
-        this.ctrls.searchBar = make.create("input", { attributes: [{ name: "class", value: "search-bar" }, { name: "type", value: "search" }] });
+        this.ctrls.searchBar = make.create("input", { attributes: [{ name: "class", value: "search-bar" }, { name: "type", value: "text" }] });
 
         const side = make.create("div");
         side.append(this.ctrls.searchBar, this.ctrls.darkSwitch);
