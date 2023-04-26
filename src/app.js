@@ -297,11 +297,9 @@ class ToDoItem {
         });
 
         this.element.addEventListener("dragstart", (e) => {
-            const data = {
-                id: this.id
-            };
+            const data = this.id;
             this.element.classList.add('move');
-            e.dataTransfer.setData('text/json', JSON.stringify(data));
+            e.dataTransfer.setData('text/plain', data);
             e.dataTransfer.effectAllowed = "move";
         });
         this.element.addEventListener("dragend", (e) => {
@@ -310,8 +308,8 @@ class ToDoItem {
 
         this.element.addEventListener("dragenter", (e) => {
             // If this is not the source element, add CSS
-            const data = JSON.parse(e.dataTransfer.getData('text/json'));
-            if (this.id != data.id) {
+            const data = e.dataTransfer.getData('text/plain');
+            if (this.id != data) {
                 this.element.classList.add('moveUnder');
             }
         });
@@ -328,9 +326,9 @@ class ToDoItem {
 
             e.preventDefault();
             // If this is the source element, abort move
-            const data = JSON.parse(e.dataTransfer.getData('text/json'));
-            if (this.id != data.id) {
-                app.move(data.id, this.id);
+            const data = e.dataTransfer.getData('text/plain');
+            if (this.id != data) {
+                app.move(data, this.id);
             }
         })
     }
