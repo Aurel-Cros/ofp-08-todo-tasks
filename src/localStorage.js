@@ -41,7 +41,6 @@ class LocalStorageHandler {
         })
         localStorage.setItem('lastId', pushList.length - 1);
         localStorage.setItem('tasksList', JSON.stringify(pushList));
-        return pushList;
     }
 
     set(taskName, taskState) {

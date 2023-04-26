@@ -6,19 +6,15 @@ const lsHandler = new LocalStorageHandler();
 
 class ToDoList {
     constructor() {
-        this.darkTheme = false;
-        // items is used to fetch from localStorage
+        // items is used to fetch from localStorage and contains the JSON list of items
         this.items = [];
-        // elements is the live list of HTML elements to interact with
+        // elements is the live list of ToDoItems objects which contains the HTML elements to interact with
         this.elements = [];
         this.componentFrame = document.querySelector("#component");
-        this.frame = document.createElement("div");
-        this.frame.id = "frame";
+        this.frame = make.create("div", { attributes: [{ name: "id", value: "frame" }] });
 
         // ctrls stores the active elements
         this.ctrls = {};
-        // DOM stores layout and misc elements
-        this.DOM = {};
 
         this.buildPage();
         this.initEvents();
@@ -76,13 +72,13 @@ class ToDoList {
         controlDiv.appendChild(controlsBar);
 
         // This creates the main as a side effect, too
-        this.DOM.main = make.create("main");
-        this.DOM.main.appendChild(controlDiv);
-        this.frame.appendChild(this.DOM.main);
+        const main = make.create("main");
+        main.appendChild(controlDiv);
+        this.frame.appendChild(main);
 
         // This will contain the tasks
         this.tasksContainer = make.create("div", { attributes: [{ name: "id", value: "tasks-container" }] });
-        this.DOM.main.appendChild(this.tasksContainer);
+        main.appendChild(this.tasksContainer);
     }
     buildTemplate() {
         this.template = make.create("template", { attributes: [{ name: "id", value: "taskTemplate" }] });
@@ -163,13 +159,14 @@ class ToDoList {
     addTask(name) {
         const task = new ToDoItem(name);
         const id = task.addToLS();
-        this.getAll();
+        task.id = id;
         this.elements[id] = task;
+        this.getAll();
     }
 
     move(elToMove, underEl) {
         const newArray = [];
-        this.items.forEach((entry, index) => {
+        this.items.forEach((entry) => {
             if (entry.id === underEl) {
                 newArray.push(entry);
                 newArray.push(this.items[elToMove]);
@@ -178,7 +175,8 @@ class ToDoList {
                 newArray.push(entry);
             }
         })
-        this.items = lsHandler.updateAll(newArray);
+        lsHandler.updateAll(newArray);
+        this.getAll();
         this.tasksContainer.replaceChildren();
         this.buildAllItems();
         this.applyFilters();
