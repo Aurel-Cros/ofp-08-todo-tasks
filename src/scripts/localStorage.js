@@ -16,8 +16,8 @@ class LocalStorageHandler {
         this.init();
     }
     init() {
-        const test = localStorage.getItem('tasksList');
-        if (test === null) {
+        // This only tests whether or not our keys exist. If they don't, create them
+        if (localStorage.getItem('tasksList') === null) {
             console.log("Storage empty, key created");
             localStorage.setItem('tasksList', '[]');
             localStorage.setItem('lastId', '-1');
@@ -30,6 +30,7 @@ class LocalStorageHandler {
         return JSON.parse(list);
     }
     updateAll(newList) {
+        // Rebuilds the stored list with the list sent in argument - format is a JSON object
         const pushList = [];
         newList.forEach((item, index) => {
             const entry = {
@@ -44,6 +45,7 @@ class LocalStorageHandler {
     }
 
     set(taskName, taskState) {
+        // Adds a new task to storage and returns the id for that task
         const entry = {
             name: taskName,
             isDone: taskState
@@ -58,6 +60,7 @@ class LocalStorageHandler {
         return entry.id;
     }
     updateText(taskId, text) {
+        // Find taskId in storage and change its text
         const currentList = this.getAll();
         const newList = [];
 
@@ -70,6 +73,7 @@ class LocalStorageHandler {
         localStorage.setItem('tasksList', JSON.stringify(newList));
     }
     complete(taskId) {
+        // Find entry and toggle its isDone property
         const currentList = this.getAll();
         const newList = [];
 
@@ -82,6 +86,7 @@ class LocalStorageHandler {
         localStorage.setItem('tasksList', JSON.stringify(newList));
     }
     delete(taskId) {
+        // Find entry and delete it
         const currentList = this.getAll();
         const newList = [];
         // Rebuild the list without the id we want out

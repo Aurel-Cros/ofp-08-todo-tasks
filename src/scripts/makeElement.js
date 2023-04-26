@@ -23,15 +23,12 @@ class MakeElement {
         this.element = document.createElement(tag);
     }
     addContent() {
-        if (this.options.content)
-            this.element.textContent = this.options.content;
+        this.element.textContent = this.options.content;
     }
     addAttributes() {
-        if (this.options.attributes) {
-            this.options.attributes.forEach((attribute) => {
-                this.element.setAttribute(attribute.name, attribute.value);
-            })
-        }
+        this.options.attributes?.forEach((attribute) => {
+            this.element.setAttribute(attribute.name, attribute.value);
+        })
     }
 }
 export { MakeElement };

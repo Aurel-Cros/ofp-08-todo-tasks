@@ -6,7 +6,7 @@ const lsHandler = new LocalStorageHandler();
 
 class ToDoList {
     constructor() {
-        // items is used to fetch from localStorage and contains the JSON list of items
+        // items is used to fetch from localStorage and contains the JSON list of items ; data is used to build the HTML elements
         this.items = [];
         // elements is the live list of ToDoItems objects which contains the HTML elements to interact with
         this.elements = [];
@@ -145,19 +145,12 @@ class ToDoList {
     }
     buildAllItems() {
         this.items.forEach((entry) => {
-            const task = new ToDoItem(entry.name);
-            task.id = entry.id;
-
-            if (entry.isDone) {
-                task.element.classList.add("done");
-                task.isComplete = entry.isDone;
-            }
             // Link HTML element to list array
-            this.elements[entry.id] = task;
+            this.elements[entry.id] = new ToDoItem(entry);
         });
     }
     addTask(name = "") {
-        const task = new ToDoItem(name);
+        const task = new ToDoItem({ name: name, isDone: false });
         const id = task.addToLS();
         task.id = id;
         this.elements[id] = task;
@@ -233,13 +226,14 @@ class ToDoList {
 }
 
 class ToDoItem {
-    constructor(name) {
-        this.name = name;
-        this.isComplete = false;
+    constructor(data) {
+        this.name = data.name;
+        this.isComplete = data.isDone;
+        this.id = data.id;
         if ("content" in document.createElement("template"))
-            this.build(name);
+            this.build(data.name);
         else
-            this.buildNoTemplate(name);
+            this.buildNoTemplate(data.name);
         this.initEvents();
     }
     build(name) {
@@ -247,6 +241,8 @@ class ToDoItem {
         this.text = this.element.querySelector("p");
         this.text.textContent = name;
         this.container.appendChild(this.element);
+        if (this.isComplete)
+            this.element.classList.add('done');
 
         this.btnDel = this.element.querySelector(".btn-del");
         this.btnDone = this.element.querySelector(".btn-done");
@@ -294,11 +290,9 @@ class ToDoItem {
         });
 
         this.grabHandle.addEventListener("mouseenter", (e) => {
-            e.stopPropagation();
             this.element.draggable = true;
         });
         this.grabHandle.addEventListener("mouseleave", (e) => {
-            e.stopPropagation();
             this.element.draggable = false;
         });
 
@@ -312,13 +306,6 @@ class ToDoItem {
             this.element.classList.remove('move');
         });
 
-        this.element.addEventListener("dragenter", () => {
-            // If this is not the source element, add CSS
-        });
-        this.element.addEventListener("dragleave", () => {
-            this.element.classList.remove('moveUnder');
-            this.element.classList.remove('moveOver');
-        });
 
         this.element.addEventListener("dragover", (e) => {
             e.preventDefault();
@@ -330,11 +317,15 @@ class ToDoItem {
                 this.element.classList.remove(this.isTopHalf(e) ? 'moveUnder' : 'moveOver');
             }
         });
+        this.element.addEventListener("dragleave", () => {
+            this.element.classList.remove('moveUnder');
+            this.element.classList.remove('moveOver');
+        });
         this.element.addEventListener("drop", (e) => {
+            e.preventDefault();
             this.element.classList.remove('moveUnder');
             this.element.classList.remove('moveOver');
 
-            e.preventDefault();
             // If this is the source element, abort move
             const data = e.dataTransfer.getData('text/plain');
             if (this.id != data) {
@@ -359,7 +350,7 @@ class ToDoItem {
         lsHandler.complete(this.id);
         // Update task manager list with new data
         app.getAll();
-        // app.applyFilters();
+        app.applyFilters();
     }
     delete() {
         // Remove item from page
@@ -370,8 +361,9 @@ class ToDoItem {
         app.getAll();
     }
 }
-
+// Initialize task manager
 const app = new ToDoList();
 ToDoItem.prototype.container = document.querySelector("#tasks-container");
+// Initial build of items in storage
 app.getAll();
 app.buildAllItems();
