@@ -318,12 +318,18 @@ class ToDoItem {
 
         this.element.addEventListener("dragover", (e) => {
             e.preventDefault();
-            const data = e.dataTransfer.getData('text/plain');
+            const data = Number(e.dataTransfer.getData('text/plain'));
 
+            // Do not process if the move would not alter the order of tasks :
+            // Trying to move task on itself, below the task above or above the task below
             if (this.id != data) {
-                e.dataTransfer.dropEffect = "move";
-                this.element.classList.add(this.isTopHalf(e) ? 'moveOver' : 'moveUnder');
-                this.element.classList.remove(this.isTopHalf(e) ? 'moveUnder' : 'moveOver');
+                const onTop = this.isTopHalf(e);
+                if (!(onTop && this.id == data + 1) &&
+                    !(!onTop && this.id + 1 == data)) {
+                    e.dataTransfer.dropEffect = "move";
+                    this.element.classList.add(onTop ? 'moveOver' : 'moveUnder');
+                }
+                this.element.classList.remove(onTop ? 'moveUnder' : 'moveOver');
             }
         });
         this.element.addEventListener("dragleave", () => {
@@ -335,10 +341,14 @@ class ToDoItem {
             this.element.classList.remove('moveUnder');
             this.element.classList.remove('moveOver');
 
-            // If this is the source element, abort move
-            const data = e.dataTransfer.getData('text/plain');
-            if (this.id != data) {
-                app.move(data, this.id, this.isTopHalf(e));
+            // Do not process if the move would not alter the order of tasks :
+            // Trying to move task on itself, below the task above or above the task below
+            const data = Number(e.dataTransfer.getData('text/plain'));
+            const onTop = this.isTopHalf(e);
+            if (this.id != data &&
+                !(onTop && this.id == data + 1) &&
+                !(!onTop && this.id + 1 == data)) {
+                app.move(data, this.id, onTop);
             }
         });
     }
