@@ -16,12 +16,12 @@ $dark-filters-text : #B9BCC6;
     }
 
     .btn-dark {
-        background-image: url(assets/img/dark-mode/dark-switch.svg);
+        background-image: url(../assets/img/dark-mode/dark-switch.svg);
     }
 
     .search-bar {
         color: $dark-main-text;
-        background-image: url(assets/img/dark-mode/search.svg);
+        background-image: url(../assets/img/dark-mode/search.svg);
 
         &:focus,
         &.hasText {
@@ -38,7 +38,7 @@ $dark-filters-text : #B9BCC6;
         background-color: $dark-btn-bg;
 
         &.ctrl-add {
-            background-image: url(assets/img/dark-mode/add.svg);
+            background-image: url(../assets/img/dark-mode/add.svg);
 
             &:hover {
                 outline: 2px solid #00B907;
@@ -46,7 +46,7 @@ $dark-filters-text : #B9BCC6;
         }
 
         &.ctrl-clr {
-            background-image: url(assets/img/dark-mode/clear-all.svg);
+            background-image: url(../assets/img/dark-mode/clear-all.svg);
 
             &:hover {
                 outline: 2px solid #CF1F1F;
@@ -61,7 +61,7 @@ $dark-filters-text : #B9BCC6;
 
     .task-bar {
         >div:first-child>div:first-child {
-            background-image: url(assets/img/dark-mode/grab.svg);
+            background-image: url(../assets/img/dark-mode/grab.svg);
         }
 
         background-color: $dark-task-bg;
@@ -73,11 +73,11 @@ $dark-filters-text : #B9BCC6;
         }
 
         .btn-done {
-            background-image: url(assets/img/dark-mode/check.svg);
+            background-image: url(../assets/img/dark-mode/check.svg);
         }
 
         .btn-del {
-            background-image: url(assets/img/dark-mode/delete.svg);
+            background-image: url(../assets/img/dark-mode/delete.svg);
         }
     }
 }

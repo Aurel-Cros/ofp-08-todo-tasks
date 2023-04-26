@@ -1,19 +1,19 @@
 @font-face {
     font-family: 'Roboto';
-    src: url(assets/fonts/Roboto-Regular.woff2);
+    src: url(../assets/fonts/Roboto-Regular.woff2);
     font-weight: 400;
 }
 
 @font-face {
     font-family: 'Roboto';
-    src: url(assets/fonts/Roboto-Medium.woff2);
+    src: url(../assets/fonts/Roboto-Medium.woff2);
     font-weight: 600;
 }
 
 @font-face {
     font-family: 'Fira Sans Condensed';
     font-weight: 500;
-    src: url(assets/fonts/FiraSansCondensed-Medium.woff2);
+    src: url(../assets/fonts/FiraSansCondensed-Medium.woff2);
 }
 
 $main-bg : #F6F6F6;
@@ -69,7 +69,7 @@ header {
     height: 1.75rem;
     border: none;
     background-color: transparent;
-    background-image: url(assets/img/dark-switch.svg);
+    background-image: url(../assets/img/dark-switch.svg);
     background-size: 100% 100%;
 }
 
@@ -81,7 +81,7 @@ header {
     padding: 0.5625rem 0.8125rem;
     padding-right: 3.4rem;
     background-color: transparent;
-    background-image: url(assets/img/search.svg);
+    background-image: url(../assets/img/search.svg);
     background-size: auto 1.75rem;
     background-repeat: no-repeat;
     background-position: calc(100% - 1rem) 50%;
@@ -151,7 +151,7 @@ header {
     }
 
     &.ctrl-add {
-        background-image: url(assets/img/add.svg);
+        background-image: url(../assets/img/add.svg);
 
         &:hover {
             // #00B907
@@ -160,7 +160,7 @@ header {
     }
 
     &.ctrl-clr {
-        background-image: url(assets/img/clear-all.svg);
+        background-image: url(../assets/img/clear-all.svg);
 
         &:hover {
             // #CF1F1F
@@ -219,7 +219,7 @@ header {
             margin-left: 0.625rem;
             width: 1.625rem;
             height: 1.625rem;
-            background-image: url(assets/img/grab.svg);
+            background-image: url(../assets/img/grab.svg);
             background-repeat: no-repeat;
             background-position: 0 50%;
             background-size: 1.625rem;
@@ -251,7 +251,7 @@ header {
         cursor: pointer;
 
         &.btn-del {
-            background-image: url(assets/img/delete.svg);
+            background-image: url(../assets/img/delete.svg);
 
             &:hover {
                 // #CF1F1F
@@ -260,7 +260,7 @@ header {
         }
 
         &.btn-done {
-            background-image: url(assets/img/check.svg);
+            background-image: url(../assets/img/check.svg);
 
             &:hover {
                 // #00B907
