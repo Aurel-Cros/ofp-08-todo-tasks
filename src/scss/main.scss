@@ -216,13 +216,15 @@ header {
         align-items: center;
 
         >div:first-child {
-            margin-left: 0.625rem;
+            padding: 0 0.625rem;
             width: 1.625rem;
-            height: 1.625rem;
+            height: 3rem;
             background-image: url(../assets/img/grab.svg);
             background-repeat: no-repeat;
-            background-position: 0 50%;
+            background-position: 50%;
             background-size: 1.625rem;
+            background-clip: content-box;
+            box-sizing: content-box;
             cursor: move;
         }
     }
@@ -230,7 +232,6 @@ header {
     p {
         margin: 0;
         padding: 1rem 0.75rem;
-        margin-left: 0.85rem;
         box-sizing: border-box;
         border-radius: $radius;
 
