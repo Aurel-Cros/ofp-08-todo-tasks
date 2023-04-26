@@ -37,9 +37,10 @@ class ToDoList {
         const title = make.create("h2", { content: "To do :" });
         this.ctrls.darkSwitch = make.create("button", { attributes: [{ name: "class", value: "btn-dark" }] });
         this.ctrls.searchBar = make.create("input", { attributes: [{ name: "class", value: "search-bar" }, { name: "type", value: "text" }] });
+        this.ctrls.searchReset = make.create("button", { content: "X", attributes: [{ name: "class", value: "btn-sb-reset" }] });
 
         const side = make.create("div");
-        side.append(this.ctrls.searchBar, this.ctrls.darkSwitch);
+        side.append(this.ctrls.searchReset, this.ctrls.searchBar, this.ctrls.darkSwitch);
 
         const header = make.create("header");
         header.append(title, side);
@@ -125,12 +126,11 @@ class ToDoList {
         })
         // Search bar,
         this.ctrls.searchBar.addEventListener("input", (e) => {
-            if (e.target.value)
-                this.ctrls.searchBar.classList.add('hasText');
-            else
-                this.ctrls.searchBar.classList.remove('hasText');
-
             this.search(e.target.value);
+        })
+        this.ctrls.searchReset.addEventListener("click", () => {
+            this.ctrls.searchBar.value = "";
+            this.search();
         })
         // Filters
         this.ctrls.filters.addEventListener("click", (e) => {
@@ -206,8 +206,17 @@ class ToDoList {
             this.search(this.ctrls.searchBar.value);
         }
     }
-    search(search) {
+    search(search = "") {
         const value = search.toLowerCase();
+
+        if (search) {
+            this.ctrls.searchBar.classList.add('hasText');
+            this.ctrls.searchReset.classList.add('active');
+        }
+        else {
+            this.ctrls.searchBar.classList.remove('hasText');
+            this.ctrls.searchReset.classList.remove('active');
+        }
 
         this.elements.forEach((task) => {
             const taskText = task.element.textContent.toLowerCase();

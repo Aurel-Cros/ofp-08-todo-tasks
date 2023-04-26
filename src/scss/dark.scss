@@ -29,6 +29,15 @@ $dark-filters-text : #B9BCC6;
         }
     }
 
+    .btn-sb-reset {
+        color: $dark-main-text;
+        transition: background-color 200ms;
+
+        &:hover {
+            background-color: $dark-btn-bg;
+        }
+    }
+
     .filters button {
         color: $dark-filters-text;
     }
