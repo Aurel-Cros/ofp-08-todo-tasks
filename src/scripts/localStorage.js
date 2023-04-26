@@ -23,7 +23,7 @@ class LocalStorageHandler {
             localStorage.setItem('lastId', '-1');
         }
         if (localStorage.getItem('dark-mode') === null)
-            localStorage.setItem('dark-mode', false);
+            localStorage.setItem('dark-mode', 'init');
     }
     getAll() {
         const list = localStorage.getItem('tasksList');

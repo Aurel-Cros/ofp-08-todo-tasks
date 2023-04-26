@@ -27,8 +27,19 @@ class ToDoList {
         this.buildHeader();
         this.buildMain();
 
+        // Checks for dark mode value in localStorage
+        // The init value means the page is opened for the first time, so we check browser preference and set dark mode accordingly
         if (lsHandler.getDarkMode() === 'true')
             document.body.classList.add('dark-mode');
+        else if (lsHandler.getDarkMode() === 'init') {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.body.classList.add('dark-mode');
+                lsHandler.setDarkMode(true);
+            }
+            else
+                lsHandler.setDarkMode(false);
+        }
+
 
     }
     buildHeader() {
