@@ -1,19 +1,19 @@
 @font-face {
     font-family: 'Roboto';
-    src: url(assets/fonts/Roboto-Regular.ttf);
+    src: url(assets/fonts/Roboto-Regular.woff2);
     font-weight: 400;
 }
 
 @font-face {
     font-family: 'Roboto';
-    src: url(assets/fonts/Roboto-Medium.ttf);
+    src: url(assets/fonts/Roboto-Medium.woff2);
     font-weight: 600;
 }
 
 @font-face {
     font-family: 'Fira Sans Condensed';
     font-weight: 500;
-    src: url(assets/fonts/FiraSansCondensed-Medium.ttf);
+    src: url(assets/fonts/FiraSansCondensed-Medium.woff2);
 }
 
 $main-bg : #F6F6F6;
@@ -194,6 +194,14 @@ header {
 
     &.moveUnder {
         border-bottom: 0.25rem dashed $sub-text;
+
+        & :first-child {
+            pointer-events: none;
+        }
+    }
+
+    &.moveOver {
+        border-top: 0.25rem dashed $sub-text;
 
         & :first-child {
             pointer-events: none;

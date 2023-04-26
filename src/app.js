@@ -165,12 +165,18 @@ class ToDoList {
         task.text.focus();
     }
 
-    move(elToMove, underEl) {
+    move(elToMove, targetEl, goOver) {
         const newArray = [];
         this.items.forEach((entry) => {
-            if (entry.id === underEl) {
-                newArray.push(entry);
-                newArray.push(this.items[elToMove]);
+            if (entry.id === targetEl) {
+                if (goOver) {
+                    newArray.push(this.items[elToMove]);
+                    newArray.push(entry);
+                }
+                else {
+                    newArray.push(entry);
+                    newArray.push(this.items[elToMove]);
+                }
             }
             else if (entry.id != elToMove) {
                 newArray.push(entry);
@@ -306,31 +312,41 @@ class ToDoItem {
             this.element.classList.remove('move');
         });
 
-        this.element.addEventListener("dragenter", (e) => {
+        this.element.addEventListener("dragenter", () => {
             // If this is not the source element, add CSS
-            const data = e.dataTransfer.getData('text/plain');
-            if (this.id != data) {
-                this.element.classList.add('moveUnder');
-            }
         });
-        this.element.addEventListener("dragleave", (e) => {
+        this.element.addEventListener("dragleave", () => {
             this.element.classList.remove('moveUnder');
+            this.element.classList.remove('moveOver');
         });
 
         this.element.addEventListener("dragover", (e) => {
-            e.dataTransfer.dropEffect = "move";
             e.preventDefault();
+            const data = e.dataTransfer.getData('text/plain');
+
+            if (this.id != data) {
+                e.dataTransfer.dropEffect = "move";
+                this.element.classList.add(this.isTopHalf(e) ? 'moveOver' : 'moveUnder');
+                this.element.classList.remove(this.isTopHalf(e) ? 'moveUnder' : 'moveOver');
+            }
         });
         this.element.addEventListener("drop", (e) => {
             this.element.classList.remove('moveUnder');
+            this.element.classList.remove('moveOver');
 
             e.preventDefault();
             // If this is the source element, abort move
             const data = e.dataTransfer.getData('text/plain');
             if (this.id != data) {
-                app.move(data, this.id);
+                app.move(data, this.id, this.isTopHalf(e));
             }
-        })
+        });
+    }
+    isTopHalf(e) {
+        const elemPos = e.target.getBoundingClientRect();
+        const y = e.clientY - elemPos.top;
+        const h = elemPos.height;
+        return y * 2 < h;
     }
     putText(text) {
         lsHandler.updateText(this.id, text);
