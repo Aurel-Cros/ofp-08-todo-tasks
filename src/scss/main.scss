@@ -233,6 +233,7 @@ header {
     >div:first-child {
         display: flex;
         align-items: center;
+        flex-grow: 1;
 
         >div:first-child {
             padding: 0 0.625rem;
@@ -253,10 +254,19 @@ header {
         padding: 1rem 0.75rem;
         box-sizing: border-box;
         border-radius: $radius;
+        word-break: break-all;
+        width: 100%;
 
         &:focus {
             outline: 1px solid $sub-text;
         }
+    }
+
+    & .btns-div {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
     }
 
     button {
