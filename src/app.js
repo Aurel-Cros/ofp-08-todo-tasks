@@ -104,7 +104,7 @@ class ToDoList {
         // Base state interactions
         // Add task button,
         this.ctrls.btnAdd.addEventListener("click", () => {
-            this.addTask("Your text here, click to edit");
+            this.addTask();
             // this.applyFilters();
         })
         // Clear all completed button,
@@ -156,12 +156,13 @@ class ToDoList {
             this.elements[entry.id] = task;
         });
     }
-    addTask(name) {
+    addTask(name = "") {
         const task = new ToDoItem(name);
         const id = task.addToLS();
         task.id = id;
         this.elements[id] = task;
         this.getAll();
+        task.text.focus();
     }
 
     move(elToMove, underEl) {
@@ -277,6 +278,7 @@ class ToDoItem {
 
         this.text.addEventListener("focusout", () => {
             this.putText(this.text.textContent);
+            app.getAll();
         });
         this.text.addEventListener("keypress", (e) => {
             if (e.key === 'Enter') {
