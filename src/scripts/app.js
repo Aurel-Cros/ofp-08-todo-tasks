@@ -160,7 +160,7 @@ class ToDoList {
             this.elements[entry.id] = new ToDoItem(entry);
         });
     }
-    addTask(name = "") {
+    addTask(name = " ") {
         const task = new ToDoItem({ name: name, isDone: false });
         const id = task.addToLS();
         task.id = id;
@@ -309,27 +309,29 @@ class ToDoItem {
             }
         });
 
-        this.grabHandle.addEventListener("mouseenter", (e) => {
+        this.grabHandle.addEventListener("mouseenter", () => {
             this.element.draggable = true;
         });
-        this.grabHandle.addEventListener("mouseleave", (e) => {
+        this.grabHandle.addEventListener("mouseleave", () => {
             this.element.draggable = false;
         });
 
         this.element.addEventListener("dragstart", (e) => {
-            const data = this.id;
             this.element.classList.add('move');
-            e.dataTransfer.setData('text/plain', data);
+            // sessionStorage is necessary rather than setData, because getData does not carry data in dragover/dragenter events, which we want to use.
+            sessionStorage.setItem('dragId', this.id);
             e.dataTransfer.effectAllowed = "move";
+            this.text.contentEditable = "false";
         });
-        this.element.addEventListener("dragend", (e) => {
+        this.element.addEventListener("dragend", () => {
             this.element.classList.remove('move');
+            this.text.contentEditable = "true";
         });
 
 
         this.element.addEventListener("dragover", (e) => {
             e.preventDefault();
-            const data = Number(e.dataTransfer.getData('text/plain'));
+            const data = Number(sessionStorage.getItem('dragId'));
 
             // Do not process if the move would not alter the order of tasks :
             // Trying to move task on itself, below the task above or above the task below
@@ -343,9 +345,13 @@ class ToDoItem {
                 this.element.classList.remove(onTop ? 'moveUnder' : 'moveOver');
             }
         });
+        this.element.addEventListener("dragenter", () => {
+            this.firstChild.classList.add('noEvents');
+        });
         this.element.addEventListener("dragleave", () => {
             this.element.classList.remove('moveUnder');
             this.element.classList.remove('moveOver');
+            this.firstChild.classList.remove('noEvents');
         });
         this.element.addEventListener("drop", (e) => {
             e.preventDefault();
@@ -354,7 +360,7 @@ class ToDoItem {
 
             // Do not process if the move would not alter the order of tasks :
             // Trying to move task on itself, below the task above or above the task below
-            const data = Number(e.dataTransfer.getData('text/plain'));
+            const data = Number(sessionStorage.getItem('dragId'));
             const onTop = this.isTopHalf(e);
             if (this.id != data &&
                 !(onTop && this.id == data + 1) &&

@@ -195,6 +195,11 @@ header {
 
     background-color: $task-bg;
     border-radius: $radius;
+    border-bottom: 0.25rem dashed transparent;
+    border-top: 0.25rem dashed transparent;
+    // We set transparent borders to avoid layout shifts when adding borders
+    margin: 0.75rem auto;
+    padding: 0.5rem 1rem;
 
     &.done {
         background-color: $task-done-bg;
@@ -212,23 +217,16 @@ header {
     }
 
     &.moveUnder {
-        border-bottom: 0.25rem dashed $sub-text;
-
-        & :first-child {
-            pointer-events: none;
-        }
+        border-bottom-color: $sub-text;
     }
 
     &.moveOver {
-        border-top: 0.25rem dashed $sub-text;
-
-        & :first-child {
-            pointer-events: none;
-        }
+        border-top-color: $sub-text;
     }
 
-    margin: 0.75rem auto;
-    padding: 0.75rem 1rem;
+    .noEvents {
+        pointer-events: none;
+    }
 
     >div:first-child {
         display: flex;
