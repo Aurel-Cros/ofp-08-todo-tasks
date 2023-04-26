@@ -346,12 +346,12 @@ class ToDoItem {
             }
         });
         this.element.addEventListener("dragenter", () => {
-            this.firstChild.classList.add('noEvents');
+            this.element.firstChild.classList.add('noEvents');
         });
         this.element.addEventListener("dragleave", () => {
             this.element.classList.remove('moveUnder');
             this.element.classList.remove('moveOver');
-            this.firstChild.classList.remove('noEvents');
+            this.element.firstChild.classList.remove('noEvents');
         });
         this.element.addEventListener("drop", (e) => {
             e.preventDefault();
