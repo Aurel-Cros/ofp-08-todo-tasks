@@ -8,7 +8,11 @@ Practice project - Javascript only to-do list using localstorage.
 
 It's super easy ! Simply head to the release link and you're ready to go ! Add a task by using the + button, then type what task you want to remember about.
 
-Once it's done, simply click on the checkmark next to your task and it'll be marked as completed.
+Once it's done, simply click on the checkmark next to your task and it'll be marked as completed. Use the trash can button to delete it.
+
+Everything will stay in place until your next visit off course ! (Be careful when you clear your navigation data, though...)
+
+Find the full list of functionalities right below ! ↓
 
 ### Features list
 * You can easily reorganize everything ! Just drag & drop any task to put where you want in the order.
