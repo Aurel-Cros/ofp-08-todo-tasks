@@ -54,6 +54,7 @@ header {
         display: flex;
         align-items: center;
         gap: 0.625rem;
+        position: relative;
     }
 
     >h2 {
@@ -97,12 +98,19 @@ header {
         outline: none;
         background-color: $btn-bg;
     }
+
+    &.hasText {
+        background-image: none !important;
+    }
 }
 
 .btn-sb-reset {
     display: none;
+    position: absolute;
+    right: 3.4rem;
+    font-size: 1.15rem;
     cursor: pointer;
-    padding: 0.5rem;
+    padding: 0.1rem 0.5rem;
     background-color: transparent;
     color: $main-text;
     border: none;

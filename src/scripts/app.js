@@ -51,7 +51,7 @@ class ToDoList {
         this.ctrls.searchReset = make.create("button", { content: "X", attributes: [{ name: "class", value: "btn-sb-reset" }] });
 
         const side = make.create("div");
-        side.append(this.ctrls.searchReset, this.ctrls.searchBar, this.ctrls.darkSwitch);
+        side.append(this.ctrls.searchBar, this.ctrls.searchReset, this.ctrls.darkSwitch);
 
         const header = make.create("header");
         header.append(title, side);
