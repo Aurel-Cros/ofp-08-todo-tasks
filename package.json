@@ -4,12 +4,12 @@
   "description": "My webpack project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode=production --node-env=production",
     "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production --node-env=production",
     "watch": "webpack --watch",
-    "serve": "webpack serve"
+    "serve": "webpack serve",
+    "webdev": "concurrently \"npm run watch\" \"npm run serve\""
   },
   "keywords": [],
   "author": "",
@@ -19,6 +19,7 @@
     "@babel/preset-env": "^7.21.4",
     "@webpack-cli/generators": "^3.0.1",
     "babel-loader": "^9.1.2",
+    "concurrently": "^8.0.1",
     "css-loader": "^6.7.3",
     "html-webpack-plugin": "^5.5.1",
     "mini-css-extract-plugin": "^2.7.5",
